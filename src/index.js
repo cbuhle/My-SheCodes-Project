@@ -24,7 +24,6 @@ function search(event) {
 
   axios.get(apiUrl).then(displayTemperature);
 }
-
 function formatDate(date) {
   let minutes = date.getMinutes();
   let hours = date.getHours();
@@ -51,7 +50,21 @@ function formatDate(date) {
   let formattedDay = days[day];
   return `${formattedDay} ${hours}:${minutes}`;
 }
-
+function displayForecast() {
+  let forecast = document.querySelector("#forecast");
+  let days = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri"];
+  let weatherForecast = "";
+  days.forEach(function (day) {
+    weatherForecast =
+      weatherForecast +
+      ` 
+  <div class="weather-forecast-date>
+  <div class="weather-forecast-day">${day}</div>
+  <div class="weather-forecast-icon">⛅</div>
+  <div class="weather-forecast-temperature">20℃</div></div> `;
+  });
+  forecast.innerHTML = weatherForecast;
+}
 let searchForm = document.querySelector("#search-form");
 searchForm.addEventListener("submit", search);
 
@@ -59,3 +72,4 @@ let currentDateELement = document.querySelector("#current-date");
 let currentDate = new Date();
 
 currentDateELement.innerHTML = formatDate(currentDate);
+displayForecast();
