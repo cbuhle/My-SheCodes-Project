@@ -68,8 +68,10 @@ function displayForecast(response) {
       `<li> 
   <div class="weather-forecast-date>
   <div class="weather-forecast-day">${day}</div>
-  <div class="weather-forecast-icon">⛅</div>
-  <div class="weather-forecast-temperature">20℃</div></div></li> `;
+  <img src="${day.condition.icon_url}" class="weather-forecast-icon"  />
+  <div class="weather-forecast-temperature">${Math.round(
+    day.temperature.minimum
+  )}℃</div></div></li> `;
   });
   forecast.innerHTML = weatherForecast;
 }
