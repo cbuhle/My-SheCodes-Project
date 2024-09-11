@@ -14,7 +14,8 @@ function displayTemperature(response) {
   let icon = document.querySelector("#current-temperature-icon");
   icon.innerHTML = `<img src="${response.data.condition.icon_url}"  /> `;
 
-  getForecast(response.data.city);
+  displayForecast(response.data.daily);
+  console.log(response.data.daily);
 }
 function search(event) {
   event.preventDefault();
@@ -25,6 +26,7 @@ function search(event) {
   let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=metric`;
 
   axios.get(apiUrl).then(displayTemperature);
+  getForecast(city);
 }
 function formatDate(date) {
   let minutes = date.getMinutes();
@@ -52,10 +54,17 @@ function formatDate(date) {
   let formattedDay = days[day];
   return `${formattedDay} ${hours}:${minutes}`;
 }
+function formatDay(time) {
+  let date = new Date(time * 1000);
+  let days = ["Sun", "Mon", "Tue", "Wed", "Thurs", "Fri", "Sat"];
+
+  return days[date.getDay()];
+}
 function getForecast(city) {
   let apiKey = "b2a5adcct04b33178913oc335f405433";
   let apiUrl = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${apiKey}&units=metric`;
   axios(apiUrl).then(displayForecast);
+  console.log(apiUrl);
 }
 function displayForecast(response) {
   console.log(response.data);
@@ -67,11 +76,16 @@ function displayForecast(response) {
       weatherForecast +
       `<li> 
   <div class="weather-forecast-date>
-  <div class="weather-forecast-day">${day}</div>
-  <img src="${day.condition.icon_url}" class="weather-forecast-icon"  />
-  <div class="weather-forecast-temperature">${Math.round(
+  <div class="weather-forecast-day">${formatDay(day.time)}</div>
+  <div class="weather-forecast-icon">
+  <img src="${day.condition.icon_url}"  />
+  </div>
+  <div class="weather-forecast-temperature">min:${Math.round(
     day.temperature.minimum
-  )}℃</div></div></li> `;
+  )}℃</div><div class="weather-forecast-temperature">max:${Math.round(
+        day.temperature.maximum
+      )}℃</div>
+ </dv> </li> `;
   });
   forecast.innerHTML = weatherForecast;
 }
@@ -82,4 +96,3 @@ let currentDateELement = document.querySelector("#current-date");
 let currentDate = new Date();
 
 currentDateELement.innerHTML = formatDate(currentDate);
-getForecast();

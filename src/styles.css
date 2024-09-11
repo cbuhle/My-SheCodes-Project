@@ -108,6 +108,7 @@ footer {
   font-weight: bolder;
   color: blue;
   text-align: center;
+  font-size: smaller;
 }
 li {
   list-style: none;
